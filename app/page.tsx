@@ -3,6 +3,7 @@ import Footer from "@/components/sections/Footer";
 import Background from "@/components/Background";
 import HighlightedRichText from "@/components/sections/HighlightedRichText";
 import LineUp from "@/components/sections/LineUp";
+import Event from "@/components/sections/Event";
 
 export default function Home() {
   return (
@@ -11,9 +12,9 @@ export default function Home() {
       <Hero />
       <HighlightedRichText />
       <LineUp />
-      <div className="min-h-screen bg-red-500"></div>
-      <div className="min-h-screen bg-red-500"></div>
-      <div className="min-h-screen bg-red-500"></div>
+      <Event />
+      <Event />
+      <Event />
       <Footer />
     </div>
   );
