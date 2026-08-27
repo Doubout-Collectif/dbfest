@@ -4,6 +4,7 @@ import Background from "@/components/Background";
 import HighlightedRichText from "@/components/sections/HighlightedRichText";
 import LineUp from "@/components/sections/LineUp";
 import Event from "@/components/sections/Event";
+import FestivalMap from "@/components/sections/Map";
 import { sanityFetch } from "@/sanity/lib/live";
 import { HOME_PAGE_QUERY } from "@/sanity/queries";
 
@@ -19,6 +20,7 @@ export default async function Home() {
       {homePage?.events?.map((event) => (
         <Event key={event._key} event={event} />
       ))}
+      <FestivalMap />
       <Footer />
     </div>
   );

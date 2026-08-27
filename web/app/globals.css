@@ -34,3 +34,22 @@ body {
   text-box-trim: trim-both;
   text-box-edge: cap alphabetic;
 }
+
+.festival-marker {
+  background: transparent;
+  border: 0;
+}
+
+.festival-marker span {
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #D8131A;
+  box-shadow: 0 0 0 6px rgba(255, 60, 172, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.leaflet-marker-icon:hover .festival-marker span {
+  transform: scale(1.3);
+}
