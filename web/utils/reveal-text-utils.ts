@@ -7,13 +7,16 @@ export const splitByMode = (
   switch (mode) {
     case "lines":
       return text
-        .split("\n")
+        .split(/\r?\n/)
         .filter((line) => line.length > 0);
 
     case "words":
-      return text.match(/\S+/g) ?? [];
+      return text.match(/\s+|[^\s]+/g) ?? [];
 
     case "characters":
       return [...text];
+
+    default:
+      return [text];
   }
 };

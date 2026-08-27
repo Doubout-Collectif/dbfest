@@ -26,14 +26,28 @@ const HighlightedRichText = ({
   if (!highlightedRichText?.texts?.length) return null;
 
   return (
-    <section ref={sectionRef} className="relative h-[200vh]">
-      <div className="sticky top-0 flex h-screen items-center justify-center px-4 sm:px-8 md:px-12 text-2xl sm:text-4xl md:text-6xl lg:text-7xl leading-tight font-thunder uppercase text-center">
+    <section
+      ref={sectionRef}
+      className="relative h-[300vh] w-full"
+    >
+      <div
+        className="
+          sticky -top-16
+          flex h-screen
+          items-center justify-center
+          px-4 sm:px-8 md:px-12
+          text-center
+          text-2xl sm:text-4xl md:text-6xl lg:text-7xl
+          leading-tight
+          font-thunder
+          uppercase
+        "
+      >
         <RevealText
           texts={highlightedRichText.texts}
-          mode="lines"
+          mode="words"
           progress={smoothProgress}
           isFirstAlreadyVisible
-          showPreviousTexts={false}
         />
       </div>
     </section>
