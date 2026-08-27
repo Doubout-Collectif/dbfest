@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+
 import { grindyBrush, thunder } from "./fonts";
 import { SanityLive } from "@/sanity/lib/live";
+
+import Navbar from "@/components/Navbar";
+import { LogoDockProvider } from "@/components/Logo-dock-context";
+
 import "./globals.css";
 
 const geistSans = Geist({
@@ -26,7 +31,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} ${thunder.variable} ${grindyBrush.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        {children}
+        <LogoDockProvider>
+          <Navbar />
+          {children}
+        </LogoDockProvider>
+
         <SanityLive />
       </body>
     </html>

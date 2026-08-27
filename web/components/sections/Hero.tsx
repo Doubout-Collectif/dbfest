@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import type { Hero as HeroType } from "@/sanity.types";
+import { HeroLogo } from "@/components/Hero-logo";
 
 const Hero = ({ hero }: { hero: HeroType | null }) => {
   if (!hero) return null;
@@ -24,7 +25,7 @@ const Hero = ({ hero }: { hero: HeroType | null }) => {
         priority
       />
       <div className="flex flex-col gap-2 sm:gap-3">
-        <Image src="logos/dbc-mini-logo.svg" alt="DBC mini logo" width={54} height={54} className="mx-auto" />
+        <HeroLogo />
         {dates && (
           <p className="text-sm sm:text-base md:text-xl font-thunder font-medium uppercase tracking-widest text-white">
             {dates}
