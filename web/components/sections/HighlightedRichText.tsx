@@ -27,7 +27,7 @@ const HighlightedRichText = ({
 
   return (
     <section ref={sectionRef} className="relative h-[200vh]">
-      <div className="sticky top-0 flex h-screen items-center justify-center text-7xl font-thunder uppercase">
+      <div className="sticky top-0 flex h-screen items-center justify-center px-4 sm:px-8 md:px-12 text-2xl sm:text-4xl md:text-6xl lg:text-7xl leading-tight font-thunder uppercase text-center">
         <RevealText
           texts={highlightedRichText.texts}
           mode="lines"

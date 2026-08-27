@@ -11,8 +11,8 @@ type ProgListProps = {
 
 const ProgList = ({ date, items, colStart }: ProgListProps) => {
   return (
-    <ul className={`flex flex-col gap-12 md:col-span-2 ${colStart ?? ""}`}>
-      <h4 className="text-2xl font-grindyBrush">{date}</h4>
+    <ul className={`flex flex-col gap-8 sm:gap-10 md:gap-12 md:col-span-2 ${colStart ?? ""}`}>
+      <h4 className="text-xl sm:text-2xl font-grindyBrush">{date}</h4>
 
       {items?.map((item) => (
         <ProgItem key={item._key} {...item} />

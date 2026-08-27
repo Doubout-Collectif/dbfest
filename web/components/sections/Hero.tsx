@@ -11,15 +11,32 @@ const Hero = ({ hero }: { hero: HeroType | null }) => {
     : "/Illustrations/illu.png";
 
   return (
-    <section aria-label="Hero" className="flex w-full min-h-screen flex-col items-center justify-center gap-0 px-6 py-24 text-center">
-      <Image src={imageUrl} alt={title ?? "Background"} width={1000} height={1000} />
-      <div>
+    <section
+      aria-label="Hero"
+      className="flex w-full min-h-dvh flex-col items-center justify-center md:justify-end gap-6 sm:gap-8 px-4 sm:px-6 py-16 sm:py-24 text-center"
+    >
+      <Image
+        src={imageUrl}
+        alt={title ?? "Background"}
+        width={1000}
+        height={1000}
+        className="md:-z-10 md:absolute w-full h-auto scale-95"
+        priority
+      />
+      <div className="flex flex-col gap-2 sm:gap-3">
+        <Image src="logos/dbc-mini-logo.svg" alt="DBC mini logo" width={54} height={54} className="mx-auto" />
         {dates && (
-          <p className="text-xl font-thunder font-medium uppercase tracking-widest text-white">{dates}</p>
+          <p className="text-sm sm:text-base md:text-xl font-thunder font-medium uppercase tracking-widest text-white">
+            {dates}
+          </p>
         )}
-        <h1 className="text-9xl text-white uppercase text-center font-grindyBrush">{title}</h1>
+        <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-white uppercase text-center font-grindyBrush leading-none">
+          {title}
+        </h1>
         {subtitle && (
-          <p className="text-base font-thunder font-light uppercase tracking-widest text-white mt-4">{subtitle}</p>
+          <p className="text-xs sm:text-sm md:text-base font-thunder font-light uppercase tracking-widest text-white mt-2 sm:mt-4">
+            {subtitle}
+          </p>
         )}
       </div>
     </section>

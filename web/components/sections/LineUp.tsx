@@ -6,9 +6,9 @@ const LineUp = ({ lineUp }: { lineUp: LineUpType | null }) => {
   if (!lineUp) return null;
 
   return (
-    <section className="min-h-screen w-full flex flex-col justify-between">
+    <section className="min-h-screen w-full flex flex-col justify-between px-4 sm:px-6 py-12 sm:py-16">
       <SectTitle title={lineUp.title ?? "Line Up"} color="black" />
-      <div className="flex-1 flex justify-around align-center flex-wrap content-center">
+      <div className="flex-1 flex flex-col md:flex-row justify-around items-center gap-12 md:gap-6 flex-wrap content-center py-12">
         {lineUp.columns?.map((column) => (
           <LineUpList
             key={column._key}
