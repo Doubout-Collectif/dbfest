@@ -7,7 +7,7 @@ import { useLogoDock } from "./Logo-dock-context";
 
 const NAVBAR_HEIGHT = 72;
 
-export function HeroLogo() {
+export default function HeroLogo() {
   const ref = useRef<HTMLDivElement>(null);
   const { isDocked, setIsDocked } = useLogoDock();
 

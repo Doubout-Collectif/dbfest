@@ -1,7 +1,13 @@
+"use client"
+
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import type { Hero as HeroType } from "@/sanity.types";
-import { HeroLogo } from "@/components/Hero-logo";
+import dynamic from "next/dynamic";
+
+const HeroLogo = dynamic(() => import("../Hero-logo"), {
+  ssr: false,
+});
 
 const Hero = ({ hero }: { hero: HeroType | null }) => {
   if (!hero) return null;
