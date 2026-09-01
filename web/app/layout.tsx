@@ -6,6 +6,7 @@ import { SanityLive } from "@/sanity/lib/live";
 
 import Navbar from "@/components/Navbar";
 import { LogoDockProvider } from "@/components/Logo-dock-context";
+import SmoothScroll from "@/components/SmoothScroll";
 
 import "./globals.css";
 
@@ -28,13 +29,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${thunder.variable} ${grindyBrush.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${thunder.variable} ${grindyBrush.variable} antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <LogoDockProvider>
-          <Navbar />
-          {children}
-        </LogoDockProvider>
+      <body className="min-h-dvh flex flex-col">
+        <SmoothScroll>
+          <LogoDockProvider>
+            <Navbar />
+            {children}
+          </LogoDockProvider>
+        </SmoothScroll>
 
         <SanityLive />
       </body>
