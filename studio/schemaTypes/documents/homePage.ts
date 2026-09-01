@@ -27,4 +27,9 @@ export const homePage = defineType({
       of: [{type: 'event'}],
     }),
   ],
+  preview: {
+    prepare() {
+      return {title: 'Page d\'accueil'}
+    },
+  },
 })
