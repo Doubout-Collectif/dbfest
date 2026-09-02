@@ -7,6 +7,9 @@ import { SanityLive } from "@/sanity/lib/live";
 import Navbar from "@/components/Navbar";
 import { LogoDockProvider } from "@/components/Logo-dock-context";
 import SmoothScroll from "@/components/SmoothScroll";
+import { FrameProvider } from "@/components/frame/Frame-context";
+import ViewportFrame from "@/components/frame/ViewportFrame";
+import IntroSequence from "@/components/frame/IntroSequence";
 
 import "./globals.css";
 
@@ -33,10 +36,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-dvh flex flex-col">
         <SmoothScroll>
-          <LogoDockProvider>
-            <Navbar />
-            {children}
-          </LogoDockProvider>
+          <FrameProvider>
+            <LogoDockProvider>
+              <Navbar />
+              {children}
+            </LogoDockProvider>
+            <ViewportFrame />
+            <IntroSequence />
+          </FrameProvider>
         </SmoothScroll>
 
         <SanityLive />
