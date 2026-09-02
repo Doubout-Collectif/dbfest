@@ -1,4 +1,10 @@
+"use client";
+
 import Image from "next/image";
+import { motion } from "motion/react";
+import { useRevealInView } from "@/components/revealAnimation/useRevealInView";
+import { useShuffledDelays } from "@/components/revealAnimation/useShuffledDelays";
+import { fadeVariants } from "@/components/revealAnimation/reveal-variants";
 
 type LineUpListeProps = {
   artists: string[];
@@ -13,8 +19,14 @@ const LineUpList = ({
   illuSrc = "/Illustrations/dbc-chara-1.png",
   color = "text-black",
 }: LineUpListeProps) => {
+  const { ref, inView } = useRevealInView<HTMLUListElement>();
+  const delays = useShuffledDelays(artists.length);
+
   return (
-    <ul className="relative h-fit flex gap-x-3 sm:gap-x-4 gap-y-2 flex-wrap justify-center max-w-[240px] sm:max-w-3xs">
+    <ul
+      ref={ref}
+      className="relative h-fit flex gap-x-3 sm:gap-x-4 gap-y-2 flex-wrap justify-center max-w-[240px] sm:max-w-3xs"
+    >
       {isIllu && (
         <Image
           src={illuSrc}
@@ -25,12 +37,16 @@ const LineUpList = ({
         />
       )}
       {artists.map((artist, index) => (
-        <li
+        <motion.li
           key={`${artist}-${index}`}
+          variants={fadeVariants}
+          custom={delays[index]}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
           className={`font-thunder text-lg sm:text-xl md:text-2xl font-normal uppercase ${color}`}
         >
           {artist}
-        </li>
+        </motion.li>
       ))}
     </ul>
   );

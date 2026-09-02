@@ -10,7 +10,11 @@ import {
 } from "react-leaflet";
 import * as L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { motion } from "motion/react";
 import SectTitle from "../SectTitle";
+import { useRevealInView } from "@/components/revealAnimation/useRevealInView";
+import { useShuffledDelays } from "@/components/revealAnimation/useShuffledDelays";
+import { fadeSlideUpVariants } from "@/components/revealAnimation/reveal-variants";
 
 type Location = {
   id: number;
@@ -118,6 +122,9 @@ function MapBounds() {
 export default function FestivalMap() {
   const [activeLocation, setActiveLocation] =
     useState<Location | null>(null);
+  const { ref: buttonsRef, inView: buttonsInView } =
+    useRevealInView<HTMLDivElement>();
+  const buttonDelays = useShuffledDelays(locations.length);
 
   const center: L.LatLngExpression = [5.01, -52.315];
 
@@ -174,12 +181,19 @@ export default function FestivalMap() {
         </div>
       </div>
 
-      <div className="mt-12 grid grid-cols-1 gap-x-12 gap-y-12 md:grid-cols-3">
-        {locations.map((location) => (
-          <button
+      <div
+        ref={buttonsRef}
+        className="mt-12 grid grid-cols-1 gap-x-12 gap-y-12 md:grid-cols-3"
+      >
+        {locations.map((location, index) => (
+          <motion.button
             key={location.id}
             type="button"
             onClick={() => setActiveLocation(location)}
+            variants={fadeSlideUpVariants}
+            custom={buttonDelays[index]}
+            initial="hidden"
+            animate={buttonsInView ? "visible" : "hidden"}
             className="flex flex-col text-left"
           >
             <h3 className="mb-2 text-xl text-[#002518] font-thunder font-medium uppercase tracking-[0.04em]">[{location.name}]</h3>
@@ -191,7 +205,7 @@ export default function FestivalMap() {
               <br />
               {location.hours}
             </p>
-          </button>
+          </motion.button>
         ))}
       </div>
     </section>
