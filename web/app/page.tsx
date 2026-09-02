@@ -31,8 +31,8 @@ export default async function Home() {
         <div key={event._key}>
           <Event event={event} />
 
-          {index < homePage.events.length - 1 && (
-            <EventIllustration index={index} />
+          {index < (homePage.events?.length ?? 0) && (
+            <EventIllustration index={index ?? 0} />
           )}
         </div>
       ))}

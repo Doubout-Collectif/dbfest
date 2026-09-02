@@ -10,7 +10,7 @@ type LineUpListeProps = {
 const LineUpList = ({
   artists,
   isIllu = false,
-  illuSrc = "/Illustrations/soloChara.png",
+  illuSrc = "/Illustrations/dbc-chara-1.png",
   color = "text-black",
 }: LineUpListeProps) => {
   return (
@@ -21,7 +21,7 @@ const LineUpList = ({
           alt="artist"
           width={272}
           height={397}
-          className="-z-10 absolute top-1/2 left-1/2 -translate-1/2 w-32 sm:w-44 md:w-[272px] h-auto"
+          className="-z-10 absolute top-1/2 left-1/2 -translate-1/2 w-32 sm:w-44 md:w-[272px] h-auto opacity-20"
         />
       )}
       {artists.map((artist, index) => (
