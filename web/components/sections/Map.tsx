@@ -180,13 +180,13 @@ export default function FestivalMap() {
             key={location.id}
             type="button"
             onClick={() => setActiveLocation(location)}
-            className="text-left"
+            className="flex flex-col text-left"
           >
-            <h3 className="mb-2 text-lg text-[#002518] font-thunder font-medium uppercase tracking-[0.04em]">[{location.name}]</h3>
+            <h3 className="mb-2 text-xl text-[#002518] font-thunder font-medium uppercase tracking-[0.04em]">[{location.name}]</h3>
 
-            <p className="text-sm font-thunder tracking-[0.04em]">{location.address}</p>
+            <p className="text-lg font-thunder tracking-[0.04em]">{location.address}</p>
 
-            <p className="mt-2 text-sm font-thunder tracking-[0.04em]">
+            <p className="mt-2 text-base font-thunder tracking-[0.04em]">
               <strong className="font-medium">Horaire :</strong>
               <br />
               {location.hours}
