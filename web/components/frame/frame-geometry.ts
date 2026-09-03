@@ -42,8 +42,8 @@ export const getFullRect = (
   return {
     left: margin,
     width: viewportWidth - margin * 2,
-    top: margin * 2.5,
-    height: viewportHeight - margin * 4.5,
+    top: margin,
+    height: viewportHeight - margin * 2,
     radius: 0,
   };
 };

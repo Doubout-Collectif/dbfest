@@ -7,6 +7,7 @@ import Prog from "@/components/prog/Prog";
 import type { Event as EventType } from "@/sanity.types";
 import { urlFor } from "@/sanity/lib/image";
 import { useRevealInView } from "@/components/revealAnimation/useRevealInView";
+import { usePinOnFullyVisible } from "@/components/revealAnimation/usePinOnFullyVisible";
 import { useShuffledDelays } from "@/components/revealAnimation/useShuffledDelays";
 import { fadeVariants } from "@/components/revealAnimation/reveal-variants";
 import { RevealParagraph } from "@/components/revealAnimation/RevealParagraph";
@@ -26,6 +27,7 @@ const Event = ({ event }: { event: EventType }) => {
   const { ref: sectionRef, inView } = useRevealInView<HTMLElement>({
     amount: 0.15,
   });
+  usePinOnFullyVisible(sectionRef);
 
   const speakerNames = (event.speakers ?? "")
     .split(/\s*,\s*|\s+-\s+/)
@@ -55,7 +57,7 @@ const Event = ({ event }: { event: EventType }) => {
       <SectTitle title={event.title ?? "Conférence"} />
       <Prog schedule={event.schedule} active={inView} startDelay={PROG_START_DELAY} />
       <div className="grid grid-cols-1 md:grid-cols-8 gap-8 md:gap-0 items-start md:items-end mt-8 md:mt-0">
-        <div className="md:col-start-1 md:col-span-2 flex flex-col gap-2 h-fit">
+        <div className="md:col-start-1 md:col-span-2 flex flex-col gap-2 h-fit px-4">
           <h4 className="text-sm sm:text-base text-[#002518]/60 font-thunder font-medium tracking-[0.04em] uppercase">
             [ Description ]
           </h4>
@@ -67,7 +69,7 @@ const Event = ({ event }: { event: EventType }) => {
             className="text-base sm:text-lg font-thunder font-light leading-5 tracking-[0.04em]"
           />
         </div>
-        <div className="md:col-start-4 md:col-span-2 flex flex-col gap-2 h-fit">
+        <div className="md:col-start-4 md:col-span-2 flex flex-col gap-2 h-fit px-4">
           <h4 className="text-sm sm:text-base text-[#002518]/60 font-thunder font-medium tracking-[0.04em] uppercase">
             [ Intervenants ]
           </h4>

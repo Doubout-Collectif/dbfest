@@ -6,6 +6,7 @@ import { urlFor } from "@/sanity/lib/image";
 import type { Hero as HeroType } from "@/sanity.types";
 import dynamic from "next/dynamic";
 import { useFrame } from "@/components/frame/Frame-context";
+import { usePinOnFullyVisible } from "@/components/revealAnimation/usePinOnFullyVisible";
 import { REVEAL_EASE } from "@/components/revealAnimation/reveal-variants";
 import { CONTENT_DELAYS, HERO_REVEAL_DURATION_S } from "@/components/frame/frame-timing";
 
@@ -44,6 +45,7 @@ const heroFadeSlideUpVariants: Variants = {
 
 const Hero = ({ hero }: { hero: HeroType | null }) => {
   const { heroSectionRef, heroIllustrationRef, contentRevealed } = useFrame();
+  usePinOnFullyVisible(heroSectionRef);
 
   if (!hero) return null;
 

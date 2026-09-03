@@ -1,10 +1,10 @@
 import type { Event as EventType } from "@/sanity.types";
 
-export const DATE_STEP = 0.12;
+export const DATE_STEP = 0.05;
 export const DATE_DURATION = 0.6;
 export const ITEM_STEP = 0.07;
 export const ITEM_JITTER = 0.03;
-export const ITEM_DURATION = 0.65;
+export const ITEM_DURATION = 0.35;
 
 /** Time (seconds, relative to Prog's own startDelay) at which the last item finishes revealing. */
 export const estimateProgDuration = (schedule: EventType["schedule"]): number => {

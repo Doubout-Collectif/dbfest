@@ -27,7 +27,7 @@ const ProgList = ({
   itemDelays,
 }: ProgListProps) => {
   return (
-    <ul className={`flex flex-col gap-8 sm:gap-10 md:gap-12 md:col-span-2 ${colStart ?? ""}`}>
+    <ul className={`flex flex-col gap-8 sm:gap-10 md:gap-12 md:col-span-2 px-4 ${colStart ?? ""}`}>
       <motion.h4
         variants={fadeVariants}
         custom={dateDelay}

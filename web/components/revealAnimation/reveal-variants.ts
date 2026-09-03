@@ -9,7 +9,7 @@ export const fadeVariants: Variants = {
   hidden: { opacity: 0 },
   visible: (delay: number) => ({
     opacity: 1,
-    transition: { duration: 0.6, ease: REVEAL_EASE, delay },
+    transition: { duration: 0.35, ease: REVEAL_EASE, delay },
   }),
 };
 
@@ -19,17 +19,17 @@ export const fadeSlideUpVariants: Variants = {
   visible: (delay: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.65, ease: REVEAL_EASE, delay },
+    transition: { duration: 0.45, ease: REVEAL_EASE, delay },
   }),
 };
 
 /** Word "staircase": fade + slight move up-and-right. Pass the delay via `custom`. */
 export const staircaseWordVariants: Variants = {
-  hidden: { opacity: 0, y: 10 },
+  hidden: { opacity: 0, y: 5 },
   visible: (delay: number) => ({
     opacity: 1,
     x: 0,
     y: 0,
-    transition: { duration: 0.25, ease: REVEAL_EASE, delay },
+    transition: { duration: 0.15, ease: REVEAL_EASE, delay },
   }),
 };
