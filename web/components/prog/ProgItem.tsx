@@ -1,13 +1,33 @@
+"use client";
+
+import { motion } from "motion/react";
+import { fadeSlideUpVariants } from "@/components/revealAnimation/reveal-variants";
+
 type ProgItemProps = {
   title?: string;
   time?: string;
   location?: string;
   address?: string;
+  active: boolean;
+  delay: number;
 };
 
-const ProgItem = ({ title, time, location, address }: ProgItemProps) => {
+const ProgItem = ({
+  title,
+  time,
+  location,
+  address,
+  active,
+  delay,
+}: ProgItemProps) => {
   return (
-    <li className="flex flex-col gap-3 sm:gap-4 max-w-full sm:max-w-3xs">
+    <motion.li
+      variants={fadeSlideUpVariants}
+      custom={delay}
+      initial="hidden"
+      animate={active ? "visible" : "hidden"}
+      className="flex flex-col gap-3 sm:gap-4 max-w-full sm:max-w-3xs"
+    >
       <div className="flex justify-between flex-wrap gap-2">
         <strong className="text-sm sm:text-xl font-medium font-thunder uppercase text-figma tracking-[0.04em]">
           {title}
@@ -22,7 +42,7 @@ const ProgItem = ({ title, time, location, address }: ProgItemProps) => {
         </p>
         <p className="text-sm sm:text-base font-thunder text-figma tracking-[0.04em]">{address}</p>
       </div>
-    </li>
+    </motion.li>
   );
 };
 

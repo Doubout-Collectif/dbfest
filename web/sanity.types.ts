@@ -15,11 +15,26 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type SanityImageAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+};
+
 export type Event = {
   _type: "event";
   title?: string;
   description?: string;
   speakers?: string;
+  hasIllustration?: boolean;
+  illustration?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
   schedule?: Array<{
     date?: string;
     items?: Array<{
@@ -49,13 +64,6 @@ export type LineUp = {
 export type HighlightedRichText = {
   _type: "highlightedRichText";
   texts?: Array<string>;
-};
-
-export type SanityImageAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 };
 
 export type Hero = {
@@ -208,10 +216,10 @@ export type Slug = {
 };
 
 export type AllSanitySchemaTypes =
+  | SanityImageAssetReference
   | Event
   | LineUp
   | HighlightedRichText
-  | SanityImageAssetReference
   | Hero
   | HomePage
   | SanityImageCrop

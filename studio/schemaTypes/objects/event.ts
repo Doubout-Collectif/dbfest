@@ -21,6 +21,20 @@ export const event = defineType({
       type: 'string',
     }),
     defineField({
+      name: 'hasIllustration',
+      title: 'Illustration en arrière-plan',
+      description: 'Affiche une illustration après cet événement.',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'illustration',
+      title: 'Image de l\'illustration',
+      type: 'image',
+      options: {hotspot: true},
+      hidden: ({parent}) => !parent?.hasIllustration,
+    }),
+    defineField({
       name: 'schedule',
       title: 'Programme',
       type: 'array',

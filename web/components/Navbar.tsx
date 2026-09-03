@@ -62,7 +62,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 h-18 flex items-top justify-between pt-8 px-8">
+    <header className="fixed top-0 inset-x-0 z-50 h-18 flex items-top justify-between pt-10 px-10">
       <div className="flex flex-col uppercase font-thunder tracking-wide tabular-nums text-[#002518] leading-none">
         <span className="text-xs sm:text-base tracking-wider text-figma">
           {hasReachedDate && currentTime

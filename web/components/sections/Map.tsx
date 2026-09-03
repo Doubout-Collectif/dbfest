@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -10,7 +10,12 @@ import {
 } from "react-leaflet";
 import * as L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { motion } from "motion/react";
 import SectTitle from "../SectTitle";
+import { useRevealInView } from "@/components/revealAnimation/useRevealInView";
+import { usePinOnFullyVisible } from "@/components/revealAnimation/usePinOnFullyVisible";
+import { useShuffledDelays } from "@/components/revealAnimation/useShuffledDelays";
+import { fadeSlideUpVariants } from "@/components/revealAnimation/reveal-variants";
 
 type Location = {
   id: number;
@@ -118,11 +123,16 @@ function MapBounds() {
 export default function FestivalMap() {
   const [activeLocation, setActiveLocation] =
     useState<Location | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  usePinOnFullyVisible(sectionRef);
+  const { ref: buttonsRef, inView: buttonsInView } =
+    useRevealInView<HTMLDivElement>();
+  const buttonDelays = useShuffledDelays(locations.length);
 
   const center: L.LatLngExpression = [5.01, -52.315];
 
   return (
-    <section className="w-full px-[5%] py-24">
+    <section ref={sectionRef} className="w-full px-8 py-24">
       <div className="relative">
         <div className="absolute left-1/2 -top-4 z-50 -translate-1/2">
           <SectTitle title="Carte" />
@@ -174,24 +184,31 @@ export default function FestivalMap() {
         </div>
       </div>
 
-      <div className="mt-12 grid grid-cols-1 gap-x-12 gap-y-12 md:grid-cols-3">
-        {locations.map((location) => (
-          <button
+      <div
+        ref={buttonsRef}
+        className="mt-12 grid grid-cols-1 gap-x-12 gap-y-12 md:grid-cols-3 px-4"
+      >
+        {locations.map((location, index) => (
+          <motion.button
             key={location.id}
             type="button"
             onClick={() => setActiveLocation(location)}
-            className="text-left"
+            variants={fadeSlideUpVariants}
+            custom={buttonDelays[index]}
+            initial="hidden"
+            animate={buttonsInView ? "visible" : "hidden"}
+            className="flex flex-col text-left"
           >
-            <h3 className="mb-2 text-lg text-[#002518] font-thunder font-medium uppercase tracking-[0.04em]">[{location.name}]</h3>
+            <h3 className="mb-2 text-xl text-[#002518] font-thunder font-medium uppercase tracking-[0.04em]">[{location.name}]</h3>
 
-            <p className="text-sm font-thunder tracking-[0.04em]">{location.address}</p>
+            <p className="text-lg font-thunder tracking-[0.04em]">{location.address}</p>
 
-            <p className="mt-2 text-sm font-thunder tracking-[0.04em]">
+            <p className="mt-2 text-base font-thunder tracking-[0.04em]">
               <strong className="font-medium">Horaire :</strong>
               <br />
               {location.hours}
             </p>
-          </button>
+          </motion.button>
         ))}
       </div>
     </section>

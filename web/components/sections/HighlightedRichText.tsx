@@ -47,7 +47,6 @@ const HighlightedRichText = ({
           texts={highlightedRichText.texts}
           mode="words"
           progress={smoothProgress}
-          isFirstAlreadyVisible
         />
       </div>
     </section>

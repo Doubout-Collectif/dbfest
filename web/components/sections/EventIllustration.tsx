@@ -5,8 +5,8 @@ type EventIllustrationProps = {
   };
   
   const illustrations = [
-    "/logos/dbc-10-ans.svg",
-    "/logos/dbc-large-logo.svg",
+    "/Illustrations/event/dbc-event-illu-6.png",
+    "/Illustrations/event/dbc-event-illu-6.png",
   ];
   
   export default function EventIllustration({
@@ -18,13 +18,13 @@ type EventIllustrationProps = {
   
     return (
       <section
-        className="flex items-center justify-center w-full min-h-[125vh] my-16"
+        className="flex items-center justify-center w-full min-h-screen my-16 overflow-hidden"
         style={{
           background:
-            "linear-gradient(to bottom, transparent 0%, #2D8869 20%, #2D8869 70%, transparent 100%)",
+            "linear-gradient(to bottom, transparent 0%, #A2D0C0 20%, #A2D0C0 70%, transparent 100%)",
         }}
       >
-        <Image src={illustration} alt="" width={300} height={300} />
+        <Image src={illustration} alt="" width={900} height={500} className="scale-250 opacity-80" />
       </section>
     );
   }
