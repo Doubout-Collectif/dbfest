@@ -36,11 +36,10 @@ type FrameContextType = {
 type PinnedSection = {
   ref: RefObject<HTMLElement | null>;
   mode: FrameMode;
-  // Hero triggers as soon as any part is on screen (it's the very first
-  // section, so that's also the initial state). Map instead should only
-  // steal the frame once fully in view — a wide, short section otherwise
-  // grabs it the moment its top pixel appears, well before the map itself
-  // is actually visible.
+  // Both Hero and Map should only steal the frame once fully in view —
+  // otherwise the border morph (full -> hero on the way back up, full ->
+  // map on the way down) kicks off while the section is still sliding in,
+  // well before it's actually filling the viewport.
   requireFullyVisible?: boolean;
 };
 
@@ -145,7 +144,7 @@ export function FrameProvider({ children }: { children: React.ReactNode }) {
   // viewport, so a fully-visible check on it would never fire.
   const pinnedSections = useMemo(
     () => [
-      { ref: heroSectionRef, mode: "hero" as const },
+      { ref: heroSectionRef, mode: "hero" as const, requireFullyVisible: true },
       { ref: mapTargetRef, mode: "map" as const, requireFullyVisible: true },
     ],
     []

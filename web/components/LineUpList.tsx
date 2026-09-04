@@ -19,7 +19,7 @@ const LineUpList = ({
   illuSrc = "/Illustrations/dbc-chara-1.png",
   color = "text-black",
 }: LineUpListeProps) => {
-  const { ref, inView } = useRevealInView<HTMLUListElement>();
+  const { ref, inView } = useRevealInView<HTMLUListElement>({ amount: 1 });
   const delays = useShuffledDelays(artists.length);
 
   return (
