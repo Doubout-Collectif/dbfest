@@ -3,6 +3,7 @@ import {hero} from './objects/hero'
 import {highlightedRichText} from './objects/highlightedRichText'
 import {lineUp} from './objects/lineUp'
 import {event} from './objects/event'
+import {footer} from './objects/footer'
 
 export const schemaTypes = [
   // Documents
@@ -12,4 +13,5 @@ export const schemaTypes = [
   highlightedRichText,
   lineUp,
   event,
+  footer,
 ]

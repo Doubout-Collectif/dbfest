@@ -15,6 +15,16 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type Footer = {
+  _type: "footer";
+  socialLinks?: Array<{
+    name: string;
+    url: string;
+    _type: "socialLink";
+    _key: string;
+  }>;
+};
+
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
@@ -94,6 +104,7 @@ export type HomePage = {
       _key: string;
     } & Event
   >;
+  footer?: Footer;
 };
 
 export type SanityImageCrop = {
@@ -216,6 +227,7 @@ export type Slug = {
 };
 
 export type AllSanitySchemaTypes =
+  | Footer
   | SanityImageAssetReference
   | Event
   | LineUp
@@ -236,7 +248,7 @@ export type AllSanitySchemaTypes =
 
 // Source: ../web/sanity/queries.ts
 // Variable: HOME_PAGE_QUERY
-// Query: *[_type == "homePage"][0]{    hero,    highlightedRichText,    lineUp,    events  }
+// Query: *[_type == "homePage"][0]{    hero,    highlightedRichText,    lineUp,    events,    footer  }
 export type HOME_PAGE_QUERY_RESULT = {
   hero: Hero | null;
   highlightedRichText: HighlightedRichText | null;
@@ -246,12 +258,13 @@ export type HOME_PAGE_QUERY_RESULT = {
       _key: string;
     } & Event
   > | null;
+  footer: Footer | null;
 } | null;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '\n  *[_type == "homePage"][0]{\n    hero,\n    highlightedRichText,\n    lineUp,\n    events\n  }\n': HOME_PAGE_QUERY_RESULT;
+    '\n  *[_type == "homePage"][0]{\n    hero,\n    highlightedRichText,\n    lineUp,\n    events,\n    footer\n  }\n': HOME_PAGE_QUERY_RESULT;
   }
 }

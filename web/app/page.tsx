@@ -44,6 +44,7 @@ export default async function Home() {
 
       <FestivalMap />
 
+      <Footer footer={homePage?.footer ?? null} />
     </div>
   );
 }
