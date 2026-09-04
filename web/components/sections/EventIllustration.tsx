@@ -25,7 +25,7 @@ type EventIllustrationProps = {
   
     return (
       <section
-        className="relative w-full h-[30vh] overflow-hidden"
+        className="relative w-full h-[10vh] md:h-[30vh] overflow-hidden"
         style={{
           background:
             "linear-gradient(to bottom, transparent 0%, #A2D0C0 20%, #A2D0C0 70%, transparent 100%)",
