@@ -1,4 +1,4 @@
-// Pure geometry helpers for the viewport frame's three states.
+// Pure geometry helpers for the viewport frame's states.
 
 export type FrameRect = {
   top: number;
@@ -48,8 +48,10 @@ export const getFullRect = (
   };
 };
 
-export const getHeroRect = (illustration: Element): FrameRect => {
-  const rect = illustration.getBoundingClientRect();
+// Generic: reads whatever element the frame is currently pinned to (the
+// Hero illustration, the Map, ...) straight off the DOM.
+export const getElementRect = (element: Element): FrameRect => {
+  const rect = element.getBoundingClientRect();
   return {
     top: rect.top,
     left: rect.left,
