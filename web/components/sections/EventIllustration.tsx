@@ -5,8 +5,15 @@ type EventIllustrationProps = {
   };
   
   const illustrations = [
-    "/Illustrations/event/dbc-event-illu-6.png",
-    "/Illustrations/event/dbc-event-illu-6.png",
+    "/Illustrations/event/bg.webp",
+    "/Illustrations/event/bg.webp",
+    "/Illustrations/event/bg.webp",
+    "/Illustrations/event/bg.webp",
+    "/Illustrations/event/bg.webp",
+    "/Illustrations/event/bg.webp",
+    "/Illustrations/event/bg.webp",
+    "/Illustrations/event/bg.webp",
+    "/Illustrations/event/bg.webp",
   ];
   
   export default function EventIllustration({
@@ -18,13 +25,27 @@ type EventIllustrationProps = {
   
     return (
       <section
-        className="flex items-center justify-center w-full min-h-screen my-16 overflow-hidden"
+        className="relative w-full h-[30vh] overflow-hidden"
         style={{
           background:
             "linear-gradient(to bottom, transparent 0%, #A2D0C0 20%, #A2D0C0 70%, transparent 100%)",
         }}
       >
-        <Image src={illustration} alt="" width={900} height={500} className="scale-250 opacity-80" />
+        <div className="absolute inset-0 flex items-center overflow-hidden">
+          <div className="flex w-max animate-marquee">
+            {[0, 1].map((copy) => (
+              <Image
+                key={copy}
+                src={illustration}
+                alt=""
+                width={3750}
+                height={750}
+                className="opacity-50 shrink-0"
+                priority
+              />
+            ))}
+          </div>
+        </div>
       </section>
     );
   }

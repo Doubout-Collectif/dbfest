@@ -43,7 +43,7 @@ const Event = ({ event }: { event: EventType }) => {
     <section
       ref={sectionRef}
       aria-label="Event"
-      className="relative flex flex-col justify-between w-full min-h-screen p-4 sm:p-6 md:p-8 mt-8 sm:mt-12 md:mt-16"
+      className="relative flex flex-col justify-between w-full min-h-screen p-4 sm:p-6 md:p-8"
     >
       {illustrationUrl && (
         <Image
