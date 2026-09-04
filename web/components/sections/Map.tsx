@@ -135,7 +135,7 @@ export default function FestivalMap() {
   return (
     <section
       ref={mapSectionRef as React.RefObject<HTMLElement>}
-      className="w-full px-8 py-24"
+      className="w-full px-4 md:px-8 py-24"
     >
       <div className="relative">
         <div className="absolute left-1/2 -top-4 z-50 -translate-1/2">

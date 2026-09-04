@@ -26,7 +26,7 @@ const ProgItem = ({
       custom={delay}
       initial="hidden"
       animate={active ? "visible" : "hidden"}
-      className="flex flex-col gap-3 sm:gap-4 max-w-full sm:max-w-3xs"
+      className="flex flex-col gap-3 sm:gap-4 max-w-full sm:max-w-3xs text-[#002518]"
     >
       <div className="flex justify-between flex-wrap gap-2">
         <strong className="text-sm sm:text-xl font-medium font-thunder uppercase text-figma tracking-[0.04em]">
