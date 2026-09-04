@@ -1,6 +1,6 @@
 type SectTitleProps = {
   title: string;
-  color?: "white" | "black";
+  color?: "white" | "black" | "dark";
   size?: "sm" | "md" | "lg";
 };
 
@@ -13,6 +13,7 @@ const sizeClasses = {
 const colorClasses = {
   white: "text-white",
   black: "text-black",
+  dark: "text-[#002518]"
 };
 
 const SectTitle = ({ title, color = "white", size = "md" }: SectTitleProps) => {

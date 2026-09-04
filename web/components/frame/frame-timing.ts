@@ -19,6 +19,18 @@ export const MORPH_SPRING = {
 // Estimated settle time for MORPH_SPRING, used to pace the scripted timeline.
 export const MORPH_SETTLE_MS = 700;
 
+// Border "stretch": the frame elongates in the direction of scroll travel,
+// scaled by Lenis's own velocity, then relaxes back to its base shape once
+// that velocity decays to 0 (Lenis resets it shortly after scrolling stops).
+export const VELOCITY_STRETCH_FACTOR = 0.8;
+export const VELOCITY_STRETCH_MAX_PX = 40;
+export const VELOCITY_STRETCH_SPRING = {
+  type: "spring",
+  stiffness: 350,
+  damping: 22,
+  mass: 0.5,
+} as const;
+
 // How much earlier (ms) the Hero reveal starts before the border's hero-morph
 // fully settles, so they overlap instead of visibly waiting on each other.
 export const CONTENT_REVEAL_LEAD_MS = 750;

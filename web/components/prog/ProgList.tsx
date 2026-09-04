@@ -33,7 +33,7 @@ const ProgList = ({
         custom={dateDelay}
         initial="hidden"
         animate={active ? "visible" : "hidden"}
-        className="text-xl sm:text-2xl font-grindyBrush"
+        className="text-xl sm:text-2xl font-grindyBrush text-[#002518]"
       >
         {date}
       </motion.h4>

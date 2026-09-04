@@ -28,16 +28,23 @@ export default async function Home() {
       <LineUp lineUp={homePage?.lineUp ?? null} />
 
       {homePage?.events?.map((event, index) => (
-        <div key={event._key}>
+        <div key={event._key} className="w-full"
+        style={{
+          background:
+            "linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.8) 60%, transparent 100%)",
+        }}
+        >
           <Event event={event} />
-          {index < (homePage.events?.length ?? 0) - 1 && (
-            <EventIllustration index={index} />
+
+          {index <= (homePage.events?.length ?? 0) - 1 && (
+            <EventIllustration index={index ?? 0} />
           )}
         </div>
       ))}
 
       <FestivalMap />
 
+      <Footer footer={homePage?.footer ?? null} />
     </div>
   );
 }

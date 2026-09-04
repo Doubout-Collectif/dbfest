@@ -10,7 +10,8 @@ const PIN_FREEZE_DURATION_MS = 300;
 /**
  * Briefly freezes Lenis scroll the instant a section fully occupies the
  * viewport (or is itself fully contained within it), then releases it —
- * a short "pin" beat rather than a real scroll-jack/sticky pin.
+ * a short "pin" beat rather than a real scroll-jack/sticky pin. Only
+ * triggers while scrolling down; scrolling up into the zone is ignored.
  *
  * Checked against raw geometry on every Lenis scroll tick rather than
  * Motion's `useInView` ratio: a ratio-based `amount: 1` can never reach 1
@@ -58,7 +59,7 @@ export const usePinOnFullyVisible = (sectionRef: RefObject<Element | null>) => {
       const enteredZone = (isInsideZone && !wasInsideZone.current) || jumpedThroughZone;
       wasInsideZone.current = isInsideZone;
 
-      if (!enteredZone) return;
+      if (!enteredZone || instance.direction !== 1) return;
 
       instance.stop();
       pinTimeout.current = setTimeout(() => instance.start(), PIN_FREEZE_DURATION_MS);

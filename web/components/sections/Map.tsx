@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -12,6 +12,7 @@ import * as L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { motion } from "motion/react";
 import SectTitle from "../SectTitle";
+import { useFrame } from "@/components/frame/Frame-context";
 import { useRevealInView } from "@/components/revealAnimation/useRevealInView";
 import { usePinOnFullyVisible } from "@/components/revealAnimation/usePinOnFullyVisible";
 import { useShuffledDelays } from "@/components/revealAnimation/useShuffledDelays";
@@ -123,8 +124,8 @@ function MapBounds() {
 export default function FestivalMap() {
   const [activeLocation, setActiveLocation] =
     useState<Location | null>(null);
-  const sectionRef = useRef<HTMLElement>(null);
-  usePinOnFullyVisible(sectionRef);
+  const { mapSectionRef, mapTargetRef } = useFrame();
+  usePinOnFullyVisible(mapSectionRef);
   const { ref: buttonsRef, inView: buttonsInView } =
     useRevealInView<HTMLDivElement>();
   const buttonDelays = useShuffledDelays(locations.length);
@@ -132,13 +133,19 @@ export default function FestivalMap() {
   const center: L.LatLngExpression = [5.01, -52.315];
 
   return (
-    <section ref={sectionRef} className="w-full px-8 py-24">
+    <section
+      ref={mapSectionRef as React.RefObject<HTMLElement>}
+      className="w-full px-4 md:px-8 py-24"
+    >
       <div className="relative">
         <div className="absolute left-1/2 -top-4 z-50 -translate-1/2">
           <SectTitle title="Carte" />
         </div>
 
-        <div className="relative z-0 h-125 w-full overflow-hidden">
+        <div
+          ref={mapTargetRef}
+          className="relative z-0 h-125 w-full overflow-hidden"
+        >
           <MapContainer
             center={center}
             zoom={14}

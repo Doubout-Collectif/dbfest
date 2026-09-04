@@ -5,6 +5,7 @@ export const HOME_PAGE_QUERY = defineQuery(`
     hero,
     highlightedRichText,
     lineUp,
-    events
+    events,
+    footer
   }
 `)

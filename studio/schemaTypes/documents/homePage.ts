@@ -26,6 +26,11 @@ export const homePage = defineType({
       type: 'array',
       of: [{type: 'event'}],
     }),
+    defineField({
+      name: 'footer',
+      title: 'Footer',
+      type: 'footer',
+    }),
   ],
   preview: {
     prepare() {
