@@ -1,5 +1,8 @@
 import type { Event as EventType } from "@/sanity.types";
 
+export const hasScheduleItems = (schedule: EventType["schedule"]) =>
+  (schedule ?? []).some((day) => (day.items?.length ?? 0) > 0);
+
 export const DATE_STEP = 0.05;
 export const DATE_DURATION = 0.6;
 export const ITEM_STEP = 0.07;

@@ -9,6 +9,7 @@ import FestivalMap from "@/components/sections/FestivalMap";
 
 import { sanityFetch } from "@/sanity/lib/live";
 import { HOME_PAGE_QUERY } from "@/sanity/queries";
+import { hasScheduleItems } from "@/components/prog/prog-timing";
 
 export default async function Home() {
   const { data: homePage } = await sanityFetch({
@@ -27,20 +28,20 @@ export default async function Home() {
 
       <LineUp lineUp={homePage?.lineUp ?? null} />
 
-      {homePage?.events?.map((event, index) => (
-        <div key={event._key} className="w-full"
-        style={{
-          background:
-            "linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.8) 60%, transparent 100%)",
-        }}
-        >
-          <Event event={event} />
+      {homePage?.events
+        ?.filter((event) => hasScheduleItems(event.schedule))
+        .map((event, index) => (
+          <div key={event._key} className="w-full"
+          style={{
+            background:
+              "linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.8) 60%, transparent 100%)",
+          }}
+          >
+            <Event event={event} />
 
-          {index <= (homePage.events?.length ?? 0) - 1 && (
             <EventIllustration index={index ?? 0} />
-          )}
-        </div>
-      ))}
+          </div>
+        ))}
 
       <FestivalMap />
 
