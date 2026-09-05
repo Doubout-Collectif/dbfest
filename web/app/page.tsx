@@ -28,9 +28,11 @@ export default async function Home() {
 
       <LineUp lineUp={homePage?.lineUp ?? null} />
 
-      {homePage?.events
-        ?.filter((event) => hasScheduleItems(event.schedule))
-        .map((event, index) => (
+      {(() => {
+        const visibleEvents =
+          homePage?.events?.filter((event) => hasScheduleItems(event.schedule)) ?? [];
+
+        return visibleEvents.map((event, index) => (
           <div key={event._key} className="w-full"
           style={{
             background:
@@ -39,9 +41,12 @@ export default async function Home() {
           >
             <Event event={event} />
 
-            <EventIllustration index={index ?? 0} />
+            {index < visibleEvents.length - 1 && (
+              <EventIllustration index={index ?? 0} />
+            )}
           </div>
-        ))}
+        ));
+      })()}
 
       <FestivalMap />
 
