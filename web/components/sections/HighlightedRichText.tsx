@@ -37,6 +37,7 @@ const HighlightedRichText = ({
           items-center justify-center
           px-4 sm:px-8 md:px-12
           text-center
+          text-white
           text-2xl sm:text-4xl md:text-6xl lg:text-7xl
           leading-tight
           font-thunder
