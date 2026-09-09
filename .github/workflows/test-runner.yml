@@ -1,0 +1,23 @@
+name: Test self-hosted runner
+
+on:
+  workflow_dispatch:
+
+jobs:
+  runner-test:
+    runs-on: [self-hosted, Linux, X64]
+
+    steps:
+      - name: Informations du runner
+        run: |
+          echo "Runner opérationnel"
+          echo "Utilisateur : $(whoami)"
+          echo "Machine : $(hostname)"
+          echo "Répertoire : $(pwd)"
+          echo "Home : $HOME"
+
+      - name: Vérifier les outils système
+        run: |
+          git --version
+          rsync --version | head -n 1
+          ssh -V
