@@ -1,0 +1,50 @@
+name: CI - Test
+
+on:
+  push:
+    branches:
+      - test
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build DBCFest Test
+    runs-on: [self-hosted, Linux, X64]
+
+    environment: test
+
+    env:
+      NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+      NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
+      SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.13.2
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Show environment
+        run: |
+          echo "Runner : $(hostname)"
+          echo "Utilisateur : $(whoami)"
+          echo "Node : $(node --version)"
+          echo "pnpm : $(pnpm --version)"
+          echo "Sanity dataset : $NEXT_PUBLIC_SANITY_DATASET"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build web
+        run: pnpm --filter web build
