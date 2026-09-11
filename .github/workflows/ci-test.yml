@@ -10,6 +10,7 @@ on:
 jobs:
   build-and-deploy:
     name: Build and deploy DBCFest Test
+    nano .github/workflows/ci-test.yml
     runs-on: [self-hosted, Linux, X64]
 
     environment: test
