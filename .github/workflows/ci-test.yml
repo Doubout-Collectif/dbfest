@@ -1,4 +1,4 @@
-name: CI - Test
+name: CI/CD - Test
 
 on:
   push:
@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Build DBCFest Test
+  build-and-deploy:
+    name: Build and deploy DBCFest Test
     runs-on: [self-hosted, Linux, X64]
 
     environment: test
@@ -18,6 +18,12 @@ jobs:
       NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
       NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
       SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}
+
+      DEPLOY_HOST: 192.168.44.249
+      DEPLOY_PORT: 5422
+      DEPLOY_USER: deploy-dbcfest
+      DEPLOY_BASE: /opt/dbcfest/test
+      SSH_KEY: /home/github-dbcfest/.ssh/dbcfest_deploy
 
     steps:
       - name: Checkout repository
@@ -32,19 +38,142 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '22'
-          cache: 'pnpm'
+          node-version: "22"
+          cache: "pnpm"
 
-      - name: Show environment
+      - name: Validate Sanity configuration
         run: |
-          echo "Runner : $(hostname)"
-          echo "Utilisateur : $(whoami)"
-          echo "Node : $(node --version)"
-          echo "pnpm : $(pnpm --version)"
-          echo "Sanity dataset : $NEXT_PUBLIC_SANITY_DATASET"
+          test -n "$NEXT_PUBLIC_SANITY_PROJECT_ID" || {
+            echo "NEXT_PUBLIC_SANITY_PROJECT_ID missing"
+            exit 1
+          }
+
+          test -n "$NEXT_PUBLIC_SANITY_DATASET" || {
+            echo "NEXT_PUBLIC_SANITY_DATASET missing"
+            exit 1
+          }
+
+          test -n "$SANITY_API_READ_TOKEN" || {
+            echo "SANITY_API_READ_TOKEN missing"
+            exit 1
+          }
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Build web
         run: pnpm --filter web build
+
+      - name: Prepare deployment package
+        run: |
+          set -e
+
+          rm -rf deploy
+          mkdir -p deploy
+
+          cp -a web/.next/standalone/. deploy/
+
+          mkdir -p deploy/web/.next
+
+          cp -a web/.next/static deploy/web/.next/static
+          cp -a web/public deploy/web/public
+
+          test -f deploy/web/server.js
+
+          echo "Deployment package:"
+          du -sh deploy
+
+      - name: Define release
+        run: |
+          echo "RELEASE=${GITHUB_SHA::7}" >> "$GITHUB_ENV"
+
+      - name: Create remote release directory
+        run: |
+          ssh \
+            -o IdentitiesOnly=yes \
+            -p "$DEPLOY_PORT" \
+            -i "$SSH_KEY" \
+            "$DEPLOY_USER@$DEPLOY_HOST" \
+            "mkdir -p '$DEPLOY_BASE/releases/$RELEASE'"
+
+      - name: Upload release
+        run: |
+          rsync -az --delete \
+            -e "ssh -p $DEPLOY_PORT -i $SSH_KEY -o IdentitiesOnly=yes" \
+            deploy/ \
+            "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_BASE/releases/$RELEASE/"
+
+      - name: Activate release
+        run: |
+          ssh \
+            -o IdentitiesOnly=yes \
+            -p "$DEPLOY_PORT" \
+            -i "$SSH_KEY" \
+            "$DEPLOY_USER@$DEPLOY_HOST" \
+            "RELEASE='$RELEASE' DEPLOY_BASE='$DEPLOY_BASE' bash -s" <<'REMOTE'
+          set -e
+
+          NEW_RELEASE="$DEPLOY_BASE/releases/$RELEASE"
+          CURRENT="$DEPLOY_BASE/current"
+
+          test -f "$NEW_RELEASE/web/server.js"
+
+          PREVIOUS="$(readlink -f "$CURRENT" || true)"
+
+          echo "Previous release: $PREVIOUS"
+          echo "New release:      $NEW_RELEASE"
+
+          rm -f "$DEPLOY_BASE/current.new"
+          ln -s "$NEW_RELEASE" "$DEPLOY_BASE/current.new"
+          mv -Tf "$DEPLOY_BASE/current.new" "$CURRENT"
+
+          sudo -n systemctl restart dbcfest-test.service
+
+          HEALTHY=0
+
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            if curl -fsS http://127.0.0.1:3001/ >/dev/null; then
+              HEALTHY=1
+              break
+            fi
+
+            echo "Health check attempt $attempt failed"
+            sleep 2
+          done
+
+          if [ "$HEALTHY" -eq 1 ]; then
+            echo "Deployment successful: $RELEASE"
+            exit 0
+          fi
+
+          echo "Health check failed."
+
+          if [ -n "$PREVIOUS" ] && [ -d "$PREVIOUS" ]; then
+            echo "Rolling back to $PREVIOUS"
+
+            rm -f "$DEPLOY_BASE/current.rollback"
+            ln -s "$PREVIOUS" "$DEPLOY_BASE/current.rollback"
+            mv -Tf "$DEPLOY_BASE/current.rollback" "$CURRENT"
+
+            sudo -n systemctl restart dbcfest-test.service
+
+            if curl -fsS http://127.0.0.1:3001/ >/dev/null; then
+              echo "Rollback successful"
+            else
+              echo "CRITICAL: rollback health check failed"
+            fi
+          fi
+
+          exit 1
+          REMOTE
+
+      - name: Verify public endpoint
+        run: |
+          curl --fail --silent --show-error \
+            --retry 5 \
+            --retry-delay 2 \
+            --retry-connrefused \
+            https://test.dbcfest.com/ \
+            >/dev/null
+
+          echo "https://test.dbcfest.com is healthy"
