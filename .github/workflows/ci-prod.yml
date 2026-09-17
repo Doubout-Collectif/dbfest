@@ -16,25 +16,19 @@ concurrency:
 jobs:
   build-and-deploy:
     name: Build and deploy DBCFest Production
-
     if: github.ref == 'refs/heads/main'
-
     runs-on: [self-hosted, Linux, X64]
-
     timeout-minutes: 20
-
     environment: production
 
     env:
       NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
       NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
       SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}
-
       DEPLOY_HOST: 192.168.44.249
       DEPLOY_PORT: 5422
       DEPLOY_USER: deploy-dbcfest-prod
       DEPLOY_BASE: /opt/dbcfest/prod
-
       SSH_KEY: /home/github-dbcfest/.ssh/dbcfest_prod_deploy
 
     steps:
@@ -54,6 +48,8 @@ jobs:
           cache: "pnpm"
 
       - name: Validate production configuration
+        env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
         run: |
           set -euo pipefail
 
@@ -69,6 +65,11 @@ jobs:
 
           test -n "$SANITY_API_READ_TOKEN" || {
             echo "SANITY_API_READ_TOKEN is missing"
+            exit 1
+          }
+
+          test -n "$SANITY_AUTH_TOKEN" || {
+            echo "SANITY_AUTH_TOKEN is missing"
             exit 1
           }
 
@@ -136,7 +137,6 @@ jobs:
             -i "$SSH_KEY" \
             "$DEPLOY_USER@$DEPLOY_HOST" \
             "RELEASE='$RELEASE' DEPLOY_BASE='$DEPLOY_BASE' bash -s" <<'REMOTE'
-
           set -euo pipefail
 
           NEW_RELEASE="$DEPLOY_BASE/releases/$RELEASE"
@@ -164,13 +164,10 @@ jobs:
           if [ -n "$OLD_CURRENT" ] \
              && [ -d "$OLD_CURRENT" ] \
              && [ "$OLD_CURRENT" != "$NEW_RELEASE" ]; then
-
             rm -f "$PREVIOUS_LINK.new"
-
             ln -s \
               "$OLD_CURRENT" \
               "$PREVIOUS_LINK.new"
-
             mv -Tf \
               "$PREVIOUS_LINK.new" \
               "$PREVIOUS_LINK"
@@ -282,7 +279,6 @@ jobs:
             -i "$SSH_KEY" \
             "$DEPLOY_USER@$DEPLOY_HOST" \
             "DEPLOY_BASE='$DEPLOY_BASE' bash -s" <<'REMOTE'
-
           set -euo pipefail
 
           CURRENT="$DEPLOY_BASE/current"
@@ -326,6 +322,14 @@ jobs:
           exit 1
           REMOTE
 
+      - name: Deploy Sanity Studio
+        env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
+        working-directory: studio
+        run: |
+          set -euo pipefail
+          pnpm exec sanity deploy --schema-required --yes
+
       - name: Cleanup old production releases
         if: success()
         run: |
@@ -337,11 +341,9 @@ jobs:
             -i "$SSH_KEY" \
             "$DEPLOY_USER@$DEPLOY_HOST" \
             "DEPLOY_BASE='$DEPLOY_BASE' bash -s" <<'REMOTE'
-
           set -euo pipefail
 
           RELEASES="$DEPLOY_BASE/releases"
-
           CURRENT="$(readlink -f "$DEPLOY_BASE/current" 2>/dev/null || true)"
           PREVIOUS="$(readlink -f "$DEPLOY_BASE/previous" 2>/dev/null || true)"
 
@@ -351,7 +353,6 @@ jobs:
           count=0
 
           while IFS= read -r release; do
-
             if [ "$release" = "$CURRENT" ] || [ "$release" = "$PREVIOUS" ]; then
               continue
             fi
@@ -377,7 +378,6 @@ jobs:
             echo "$release"
 
             rm -rf -- "$release"
-
           done < <(
             find "$RELEASES" \
               -mindepth 1 \
@@ -388,3 +388,4 @@ jobs:
             | cut -d' ' -f2-
           )
           REMOTE
+
