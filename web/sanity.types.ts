@@ -262,9 +262,12 @@ export type HOME_PAGE_QUERY_RESULT = {
 } | null;
 
 // Query TypeMap
-import "@sanity/client";
-declare module "@sanity/client" {
+declare global {
   interface SanityQueries {
     '\n  *[_type == "homePage"][0]{\n    hero,\n    highlightedRichText,\n    lineUp,\n    events,\n    footer\n  }\n': HOME_PAGE_QUERY_RESULT;
   }
+}
+// Lets @sanity/client releases that predate the global registry read it too
+declare module "@sanity/client" {
+  interface SanityQueries extends globalThis.SanityQueries {}
 }
